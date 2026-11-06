@@ -43,6 +43,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let bill_per_head = total_bill / people.len();
 
     println!("Total bill: {total_bill}");
+    println!("Head count: {}", people.len());
     println!("Bill per head: {bill_per_head}");
     println!();
 
