@@ -61,8 +61,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         // see how much each underpaid should give this guy, until their excess payment is covered
         for poor in &mut underpaid {
-            let has_to_pay = bill_per_head - poor.paid;
-            if !args.strict && has_to_pay <= args.forgiveness_amount {
+            let poor_has_to_pay = bill_per_head - poor.paid;
+            if !args.strict && poor_has_to_pay <= args.forgiveness_amount {
                 poor.paid = bill_per_head;
                 continue;
             }
@@ -78,7 +78,13 @@ fn main() -> Result<(), Box<dyn Error>> {
 
             poor.paid += to_pay_deservee;
 
-            if pending_amount_to_recv == 0 {
+            if pending_amount_to_recv
+                <= if args.strict {
+                    0
+                } else {
+                    args.forgiveness_amount
+                }
+            {
                 break;
             }
         }
